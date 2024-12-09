@@ -51,8 +51,8 @@ func Test_readBytes(t *testing.T) {
 func Test_Main(t *testing.T) {
 	//offset := int64(3467247618)
 	//var filePath = "/Users/ym/fs/sealed/s-t03252730-1"
-	var filePath1 = "/Users/ym/Desktop/sealed/s-t03252730-2"
-	var filePath2 = "/Users/ym/fs/sealed/s-t03252730-2"
+	var filePath1 = "/Users/ym/Desktop/sealed/s-t03252730-1"
+	var filePath2 = "/Users/ym/fs/sealed/s-t03252730-1"
 	file1, err := os.OpenFile(filePath1, os.O_RDONLY, 0644)
 	if err != nil {
 		fmt.Printf("打开文件失败: %v\n", err)
@@ -72,7 +72,7 @@ func Test_Main(t *testing.T) {
 		fmt.Printf("获取文件信息失败: %v", err)
 		return
 	}
-	everySize := int64(333)
+	everySize := int64(4096)
 	for i := int64(0); i < fileInfo.Size(); i = i + everySize {
 		b1, err1 := readBytes(file1, i, everySize)
 		if err1 != nil {
@@ -90,6 +90,8 @@ func Test_Main(t *testing.T) {
 			fmt.Printf("index read not equal, i:%d, \n b1:%v, \n b2:%v \n", i, b1, b2)
 			break
 		}
-		fmt.Printf("index read is equal, i:%d \n", i)
+		if i%100 == 0 {
+			fmt.Printf("index read is equal, i:%d \n", i)
+		}
 	}
 }

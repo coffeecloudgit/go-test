@@ -51,8 +51,8 @@ func readBytes(file *os.File, offset, readSize int64) ([]byte, error) {
 func main() {
 	offset := int64(3467247618)
 	readSize := int64(300)
-	//var filePath = "/Users/ym/fs/sealed/s-t03252730-1"
-	var filePath1 = "/Users/ym/Desktop/sealed/s-t03252730-2"
+	var filePath1 = "/Users/ym/fs/sealed/s-t03252730-1"
+	var filePath2 = "/Users/ym/Desktop/sealed/s-t03252730-2"
 	file1, err := os.OpenFile(filePath1, os.O_RDONLY, 0644)
 	if err != nil {
 		fmt.Printf("打开文件失败: %v\n", err)
@@ -60,11 +60,30 @@ func main() {
 	}
 	defer file1.Close()
 
+	file2, err := os.OpenFile(filePath2, os.O_RDONLY, 0644)
+	if err != nil {
+		fmt.Printf("打开文件失败: %v\n", err)
+		return
+	}
+	defer file2.Close()
+
 	b1, err1 := readBytes(file1, offset, readSize)
 	if err1 != nil {
 		fmt.Printf("err1:%v \n", err1)
 		return
 	}
 
-	fmt.Println(b1)
+	b2, err2 := readBytes(file2, offset, readSize)
+
+	if err2 != nil {
+		fmt.Printf("err2:%v \n", err2)
+		return
+	}
+
+	if string(b1) != string(b2) {
+		fmt.Printf("b1 b2 not equal, offset:%d, \n b1:%v, \n b2:%v \n", offset, b1, b2)
+		return
+	}
+
+	fmt.Println("b1 b2 is equal")
 }
